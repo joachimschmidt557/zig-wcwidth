@@ -4,6 +4,7 @@ const testing = std.testing;
 const main = @import("main.zig");
 const wcwidth = main.wcwidth;
 const wcswidth = main.wcswidth;
+const sliceWidth = main.sliceWidth;
 
 test "null character" {
     testing.expectEqual(@as(isize, 0), wcwidth(0));
@@ -32,13 +33,13 @@ test "hello jp" {
     }
 
     // Check phrase width
-    // testing.expectEqual(expect_length_phrase, wcswidth(phrase));
+    testing.expectEqual(expect_length_phrase, try sliceWidth(phrase));
 }
 
 test "csi width -1" {
     const phrase = "\x1B[0m";
     const expect_length_each = [_]isize{ -1, 1, 1, 1 };
-    const expect_length_phrase = -1;
+    const expect_length_phrase: isize = -1;
 
     // Check individual widths
     var utf8 = (try std.unicode.Utf8View.init(phrase)).iterator();
@@ -48,13 +49,13 @@ test "csi width -1" {
     }
 
     // Check phrase width
-    // testing.expectEqual(expect_length_phrase, wcswidth(phrase));
+    testing.expectEqual(expect_length_phrase, try sliceWidth(phrase));
 }
 
 test "combining total 4" {
     const phrase = "--\u{05BF}--";
     const expect_length_each = [_]isize{ 1, 1, 0, 1, 1 };
-    const expect_length_phrase = 4;
+    const expect_length_phrase: isize = 4;
 
     // Check individual widths
     var utf8 = (try std.unicode.Utf8View.init(phrase)).iterator();
@@ -64,13 +65,13 @@ test "combining total 4" {
     }
 
     // Check phrase width
-    // testing.expectEqual(expect_length_phrase, wcswidth(phrase));
+    testing.expectEqual(expect_length_phrase, try sliceWidth(phrase));
 }
 
 test "combining cafe" {
     const phrase = "cafe\u{0301}";
     const expect_length_each = [_]isize{ 1, 1, 1, 1, 0 };
-    const expect_length_phrase = 4;
+    const expect_length_phrase: isize = 4;
 
     // Check individual widths
     var utf8 = (try std.unicode.Utf8View.init(phrase)).iterator();
@@ -80,13 +81,13 @@ test "combining cafe" {
     }
 
     // Check phrase width
-    // testing.expectEqual(expect_length_phrase, wcswidth(phrase));
+    testing.expectEqual(expect_length_phrase, try sliceWidth(phrase));
 }
 
 test "combining enclosing" {
     const phrase = "\u{0401}\u{0488}";
     const expect_length_each = [_]isize{ 1, 0 };
-    const expect_length_phrase = 1;
+    const expect_length_phrase: isize = 1;
 
     // Check individual widths
     var utf8 = (try std.unicode.Utf8View.init(phrase)).iterator();
@@ -96,13 +97,13 @@ test "combining enclosing" {
     }
 
     // Check phrase width
-    // testing.expectEqual(expect_length_phrase, wcswidth(phrase));
+    testing.expectEqual(expect_length_phrase, try sliceWidth(phrase));
 }
 
 test "combining spacing" {
     const phrase = "\u{1B13}\u{1B28}\u{1B2E}\u{1B44}";
     const expect_length_each = [_]isize{ 1, 1, 1, 1 };
-    const expect_length_phrase = 4;
+    const expect_length_phrase: isize = 4;
 
     // Check individual widths
     var utf8 = (try std.unicode.Utf8View.init(phrase)).iterator();
@@ -112,5 +113,5 @@ test "combining spacing" {
     }
 
     // Check phrase width
-    // testing.expectEqual(expect_length_phrase, wcswidth(phrase));
+    testing.expectEqual(expect_length_phrase, try sliceWidth(phrase));
 }

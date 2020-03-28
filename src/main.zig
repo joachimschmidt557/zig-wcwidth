@@ -129,17 +129,32 @@ pub fn wcwidth(wc: u32) isize {
 
 /// Given a unicode string, return its printable length on a terminal.
 ///
-/// Return the width, in cells, necessary to display the first ``n``
-/// characters of the unicode string ``pwcs``.  When ``n`` is None (default),
-/// return the length of the entire string.
-///
 /// Returns ``-1`` if a non-printable character is encountered.
-pub fn wcswidth(wcs: []u32) isize {
+pub fn wcswidth(wcs: []const u32) isize {
     var width: isize = 0;
+
     for (wcs) |char| {
         const wcw = wcwidth(char);
         if (wcw < 0) return -1;
         width += wcw;
     }
+
+    return width;
+}
+
+/// Given a byte slice, return its printable length on a terminal. Returns
+/// error.InvalidUtf8 when the byte slice does not contain valid UTF-8.
+///
+/// Returns ``-1`` if a non-printable character is encountered.
+pub fn sliceWidth(s: []const u8) !isize {
+    var width: isize = 0;
+
+    var utf8 = (try std.unicode.Utf8View.init(s)).iterator();
+    while (utf8.nextCodepoint()) |codepoint| {
+        const wcw = wcwidth(codepoint);
+        if (wcw < 0) return -1;
+        width += wcw;
+    }
+
     return width;
 }
