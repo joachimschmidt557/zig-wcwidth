@@ -6,6 +6,25 @@ pub fn build(b: *Builder) void {
     lib.setBuildMode(mode);
     lib.install();
 
+    var gen_wide_exe = b.addExecutable("genwide", "generate/wide.zig");
+    var gen_zero_exe = b.addExecutable("genzero", "generate/zero.zig");
+
+    var gen_wide_cmd = gen_wide_exe.run();
+    var gen_zero_cmd = gen_zero_exe.run();
+
+    gen_wide_cmd.addArgs(&[_][]const u8{
+        "EastAsianWidth.txt",
+        "src/table_wide.zig",
+    });
+    gen_zero_cmd.addArgs(&[_][]const u8{
+        "DerivedGeneralCategory.txt",
+        "src/table_zero.zig",
+    });
+
+    const gen_step = b.step("generate", "Generate tables");
+    gen_step.dependOn(&gen_wide_cmd.step);
+    gen_step.dependOn(&gen_zero_cmd.step);
+
     var main_tests = b.addTest("src/test.zig");
     main_tests.setBuildMode(mode);
 
