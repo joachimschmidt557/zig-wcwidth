@@ -6,7 +6,7 @@ const wide_eastasian = @import("table_wide.zig").wide_eastasian;
 const zero_width = @import("table_zero.zig").zero_width;
 
 /// A simple binary search in a list containing lower and upper bounds
-fn tableBisearch(ucs: u32, table:[]const [2]u32) bool {
+fn tableBisearch(ucs: u21, table: []const [2]u21) bool {
     var lbound: usize = 0;
     var ubound: usize = table.len - 1;
 
@@ -31,7 +31,7 @@ fn tableBisearch(ucs: u32, table:[]const [2]u32) bool {
 }
 
 /// A simple binary search for a simple ordered list
-fn listBisearch(ucs: u32, list:[]const u32) bool {
+fn listBisearch(ucs: u21, list: []const u21) bool {
     var lbound: usize = 0;
     var ubound: usize = list.len - 1;
 
@@ -103,7 +103,7 @@ fn listBisearch(ucs: u32, list:[]const u32) bool {
 ///     - Spacing characters in the East Asian Wide (W) or East Asian
 ///       Full-width (F) category as defined in Unicode Technical
 ///       Report #11 have a column width of 2.
-pub fn wcwidth(wc: u32) isize {
+pub fn wcwidth(wc: u21) isize {
     // Manual list
     if (listBisearch(wc, &zero_width_cf)) {
         return 0;
@@ -130,7 +130,7 @@ pub fn wcwidth(wc: u32) isize {
 /// Given a unicode string, return its printable length on a terminal.
 ///
 /// Returns ``-1`` if a non-printable character is encountered.
-pub fn wcswidth(wcs: []const u32) isize {
+pub fn wcswidth(wcs: []const u21) isize {
     var width: isize = 0;
 
     for (wcs) |char| {
