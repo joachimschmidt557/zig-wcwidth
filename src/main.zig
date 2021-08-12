@@ -55,8 +55,6 @@ fn listBisearch(ucs: u21, list: []const u21) bool {
     return false;
 }
 
-fn matchVersion(given: anytype) void {}
-
 /// Given one unicode character, return its printable length on a terminal.
 ///
 /// The wcwidth() function returns 0 if the wc argument has no printable effect

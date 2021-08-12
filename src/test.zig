@@ -7,13 +7,13 @@ const wcswidth = main.wcswidth;
 const sliceWidth = main.sliceWidth;
 
 test "null character" {
-    testing.expectEqual(@as(isize, 0), wcwidth(0));
+    try testing.expectEqual(@as(isize, 0), wcwidth(0));
 }
 
 test "simple ascii characters" {
-    testing.expectEqual(@as(isize, 1), wcwidth('a'));
-    testing.expectEqual(@as(isize, 1), wcwidth('1'));
-    testing.expectEqual(@as(isize, 1), wcwidth('-'));
+    try testing.expectEqual(@as(isize, 1), wcwidth('a'));
+    try testing.expectEqual(@as(isize, 1), wcwidth('1'));
+    try testing.expectEqual(@as(isize, 1), wcwidth('-'));
 }
 
 test "hello jp" {
@@ -29,11 +29,11 @@ test "hello jp" {
     var utf8 = (try std.unicode.Utf8View.init(phrase)).iterator();
     var i: usize = 0;
     while (utf8.nextCodepoint()) |codepoint| : (i += 1) {
-        testing.expectEqual(expect_length_each[i], wcwidth(codepoint));
+        try testing.expectEqual(expect_length_each[i], wcwidth(codepoint));
     }
 
     // Check phrase width
-    testing.expectEqual(expect_length_phrase, try sliceWidth(phrase));
+    try testing.expectEqual(expect_length_phrase, try sliceWidth(phrase));
 }
 
 test "csi width -1" {
@@ -45,11 +45,11 @@ test "csi width -1" {
     var utf8 = (try std.unicode.Utf8View.init(phrase)).iterator();
     var i: usize = 0;
     while (utf8.nextCodepoint()) |codepoint| : (i += 1) {
-        testing.expectEqual(expect_length_each[i], wcwidth(codepoint));
+        try testing.expectEqual(expect_length_each[i], wcwidth(codepoint));
     }
 
     // Check phrase width
-    testing.expectEqual(expect_length_phrase, try sliceWidth(phrase));
+    try testing.expectEqual(expect_length_phrase, try sliceWidth(phrase));
 }
 
 test "combining total 4" {
@@ -61,11 +61,11 @@ test "combining total 4" {
     var utf8 = (try std.unicode.Utf8View.init(phrase)).iterator();
     var i: usize = 0;
     while (utf8.nextCodepoint()) |codepoint| : (i += 1) {
-        testing.expectEqual(expect_length_each[i], wcwidth(codepoint));
+        try testing.expectEqual(expect_length_each[i], wcwidth(codepoint));
     }
 
     // Check phrase width
-    testing.expectEqual(expect_length_phrase, try sliceWidth(phrase));
+    try testing.expectEqual(expect_length_phrase, try sliceWidth(phrase));
 }
 
 test "combining cafe" {
@@ -77,11 +77,11 @@ test "combining cafe" {
     var utf8 = (try std.unicode.Utf8View.init(phrase)).iterator();
     var i: usize = 0;
     while (utf8.nextCodepoint()) |codepoint| : (i += 1) {
-        testing.expectEqual(expect_length_each[i], wcwidth(codepoint));
+        try testing.expectEqual(expect_length_each[i], wcwidth(codepoint));
     }
 
     // Check phrase width
-    testing.expectEqual(expect_length_phrase, try sliceWidth(phrase));
+    try testing.expectEqual(expect_length_phrase, try sliceWidth(phrase));
 }
 
 test "combining enclosing" {
@@ -93,11 +93,11 @@ test "combining enclosing" {
     var utf8 = (try std.unicode.Utf8View.init(phrase)).iterator();
     var i: usize = 0;
     while (utf8.nextCodepoint()) |codepoint| : (i += 1) {
-        testing.expectEqual(expect_length_each[i], wcwidth(codepoint));
+        try testing.expectEqual(expect_length_each[i], wcwidth(codepoint));
     }
 
     // Check phrase width
-    testing.expectEqual(expect_length_phrase, try sliceWidth(phrase));
+    try testing.expectEqual(expect_length_phrase, try sliceWidth(phrase));
 }
 
 test "combining spacing" {
@@ -109,9 +109,9 @@ test "combining spacing" {
     var utf8 = (try std.unicode.Utf8View.init(phrase)).iterator();
     var i: usize = 0;
     while (utf8.nextCodepoint()) |codepoint| : (i += 1) {
-        testing.expectEqual(expect_length_each[i], wcwidth(codepoint));
+        try testing.expectEqual(expect_length_each[i], wcwidth(codepoint));
     }
 
     // Check phrase width
-    testing.expectEqual(expect_length_phrase, try sliceWidth(phrase));
+    try testing.expectEqual(expect_length_phrase, try sliceWidth(phrase));
 }
