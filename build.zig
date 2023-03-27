@@ -5,7 +5,7 @@ pub fn build(b: *Build) void {
     const target = b.standardTargetOptions(.{});
     const optimize = b.standardOptimizeOption(.{});
     
-    _ = b.addModule(.{
+    _ = b.addModule("wcwidth", .{
         .source_file = .{ .path = "src/main.zig" },
     });
     
