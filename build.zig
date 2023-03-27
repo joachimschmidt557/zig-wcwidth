@@ -1,6 +1,7 @@
-const Builder = @import("std").build.Builder;
+const Build = @import("std").Build;
+const FileSource = Build.FileSource;
 
-pub fn build(b: *Builder) void {
+pub fn build(b: *Build) void {
     const target = b.standardTargetOptions(.{});
     const optimize = b.standardOptimizeOption(.{});
     
