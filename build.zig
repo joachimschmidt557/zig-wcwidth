@@ -3,6 +3,10 @@ const Builder = @import("std").build.Builder;
 pub fn build(b: *Builder) void {
     const target = b.standardTargetOptions(.{});
     const mode = b.standardReleaseOptions();
+    
+    _ = b.addModule(.{
+        .source_file = .{ .path = "src/main.zig" },
+    });
 
     const lib = b.addStaticLibrary("zig-wcwidth", "src/main.zig");
     lib.setTarget(target);
