@@ -67,7 +67,7 @@ fn makeTable(allocator: Allocator, values: []const u21) ![]const [2]u21 {
 
     var start = values[0];
     var end = values[0];
-    for (values) |x, i| {
+    for (values, 0..) |x, i| {
         if (i == 0) {
             try result.append([2]u21{ x, x });
         } else {
@@ -114,7 +114,6 @@ fn writeEastAsian(allocator: Allocator, versions: []const Version) !void {
     _ = allocator;
     _ = versions;
     _ = reader;
-    _ = out_file;
 }
 
 fn parseEastAsian(allocator: Allocator, reader: anytype) !Table {

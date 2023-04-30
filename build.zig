@@ -9,14 +9,6 @@ pub fn build(b: *Build) void {
         .source_file = .{ .path = "src/main.zig" },
     });
 
-    const lib = b.addStaticLibrary(.{
-        .name = "zig-wcwidth",
-        .root_source_file = FileSource.relative("src/main.zig"),
-        .target = target,
-        .optimize = optimize,
-    });
-    lib.install();
-
     var generate = b.addExecutable(.{
         .name = "generate",
         .root_source_file = FileSource.relative("tools/generate.zig"),
@@ -24,7 +16,7 @@ pub fn build(b: *Build) void {
         .optimize = optimize,
     });
 
-    var generate_run = generate.run();
+    var generate_run = b.addRunArtifact(generate);
 
     const generate_step = b.step("generate", "Generate tables");
     generate_step.dependOn(&generate_run.step);
@@ -35,6 +27,8 @@ pub fn build(b: *Build) void {
         .optimize = optimize,
     });
 
+    const run_main_tests = b.addRunArtifact(main_tests);
+
     const test_step = b.step("test", "Run library tests");
-    test_step.dependOn(&main_tests.step);
+    test_step.dependOn(&run_main_tests.step);
 }
