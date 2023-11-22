@@ -9,19 +9,19 @@ pub fn build(b: *Build) void {
         .source_file = .{ .path = "src/main.zig" },
     });
 
-    var generate = b.addExecutable(.{
+    const generate = b.addExecutable(.{
         .name = "generate",
         .root_source_file = FileSource.relative("tools/generate.zig"),
         .target = target,
         .optimize = optimize,
     });
 
-    var generate_run = b.addRunArtifact(generate);
+    const generate_run = b.addRunArtifact(generate);
 
     const generate_step = b.step("generate", "Generate tables");
     generate_step.dependOn(&generate_run.step);
 
-    var main_tests = b.addTest(.{
+    const main_tests = b.addTest(.{
         .root_source_file = FileSource.relative("src/test.zig"),
         .target = target,
         .optimize = optimize,
