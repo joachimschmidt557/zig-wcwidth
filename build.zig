@@ -5,12 +5,12 @@ pub fn build(b: *Build) void {
     const optimize = b.standardOptimizeOption(.{});
 
     _ = b.addModule("wcwidth", .{
-        .root_source_file = .{ .path = "src/main.zig" },
+        .root_source_file = b.path("src/main.zig"),
     });
 
     const generate = b.addExecutable(.{
         .name = "generate",
-        .root_source_file = .{ .path = "tools/generate.zig" },
+        .root_source_file = b.path("tools/generate.zig"),
         .target = target,
         .optimize = optimize,
     });
@@ -21,7 +21,7 @@ pub fn build(b: *Build) void {
     generate_step.dependOn(&generate_run.step);
 
     const main_tests = b.addTest(.{
-        .root_source_file = .{ .path = "src/test.zig" },
+        .root_source_file = b.path("src/test.zig"),
         .target = target,
         .optimize = optimize,
     });
