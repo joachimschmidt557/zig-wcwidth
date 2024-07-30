@@ -2,7 +2,7 @@ const std = @import("std");
 const process = std.process;
 const Allocator = std.mem.Allocator;
 const ArrayList = std.ArrayList;
-const Version = std.builtin.Version;
+const Version = std.SemanticVersion;
 
 const max_line_len = 1024 * 40;
 
