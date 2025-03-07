@@ -2,4 +2,4 @@
 
 A port of [wcwidth](https://github.com/jquast/wcwidth) to zig
 
-Supports Zig 0.13.0
+`wcwidth` works with Zig 0.14.0.
