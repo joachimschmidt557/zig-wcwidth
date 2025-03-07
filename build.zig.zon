@@ -1,6 +1,6 @@
 .{
     .name = .wcwidth,
-    .version = "0.0.0",
+    .version = "0.1.0",
     .fingerprint = 0x70fbfe1dea1a8003,
     .paths = .{
         "build.zig",
