@@ -10,9 +10,11 @@ pub fn build(b: *Build) void {
 
     const generate = b.addExecutable(.{
         .name = "generate",
-        .root_source_file = b.path("tools/generate.zig"),
-        .target = target,
-        .optimize = optimize,
+        .root_module = b.createModule(.{
+            .root_source_file = b.path("tools/generate.zig"),
+            .target = target,
+            .optimize = optimize,
+        }),
     });
 
     const generate_run = b.addRunArtifact(generate);
@@ -21,9 +23,11 @@ pub fn build(b: *Build) void {
     generate_step.dependOn(&generate_run.step);
 
     const main_tests = b.addTest(.{
-        .root_source_file = b.path("src/test.zig"),
-        .target = target,
-        .optimize = optimize,
+        .root_module = b.createModule(.{
+            .root_source_file = b.path("src/test.zig"),
+            .target = target,
+            .optimize = optimize,
+        }),
     });
 
     const run_main_tests = b.addRunArtifact(main_tests);
